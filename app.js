@@ -6,14 +6,15 @@ const modalContent = document.querySelector(".modal-content");
 const modalClose = document.querySelector(".modal-button");
 const modalWrapper = document.querySelector(".modal-bg");
 
+let score = 0;
+let correct = 0;
+let totalScore = 0;
+
 /******************
  * Form
  ******************/
 const formResult = (event) => {
   event.preventDefault();
-
-  let score = 0;
-  let correct = 0;
 
   const userAnswers = [
     form.question1.value,
@@ -30,7 +31,7 @@ const formResult = (event) => {
     }
   });
 
-  openModal(score, correct);
+  openModal();
 };
 
 form.addEventListener("submit", formResult);
@@ -38,13 +39,26 @@ form.addEventListener("submit", formResult);
 /*******************
  * Modal
  *******************/
-const openModal = (score, correct) => {
-  modalContent.innerHTML = `
+const openModal = () => {
+  modalPoints();
+};
+
+const modalPoints = () => {
+  modal.style.display = "block";
+
+  const timer = setInterval(() => {
+    modalContent.innerHTML = `
     <h5>Minha pontuação</h5>
-    <h1>${score}</h1>
+    <h1>${totalScore}%</h1>
     <p>Você acertou ${correct} de ${correctAnswers.length} perguntas</p>
   `;
-  modal.style.display = "block";
+
+    if (totalScore === score) {
+      clearInterval(timer);
+    }
+
+    totalScore++;
+  }, 10);
 };
 
 modalClose.addEventListener("click", () => {
